@@ -20,7 +20,7 @@ def apply_caching(response):
     img_src="img-src 'self' data: https://onedesign.azureedge.net https://ndtai.azureedge.net;"
     frame_src="frame-src 'self' https://www.google.com https://www.recaptcha.net/"
     response.headers["content-security-policy"] = " ".join((default_src,object_src,script_src,font_src,media_src,img_src,frame_src))
-    del response.headers['Server']
+    response.headers['Server'] = ""
     return response
 
 @web.route("/")
