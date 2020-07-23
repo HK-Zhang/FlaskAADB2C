@@ -6,6 +6,22 @@ import msal
 
 from . import web
 
+@web.after_request
+def apply_caching(response):
+    response.headers["X-Frame-Options"] = "SAMEORIGIN"
+    response.headers["X-Xss-Protection"] = "1"
+    response.headers["Referrer-Policy"] = "no-referrer"
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    default_src="default-src 'self';"
+    object_src="object-src 'self'; style-src 'self' https://onedesign.azureedge.net https://ndtai.azureedge.net;"
+    script_src="script-src 'self' https://ndtai.azureedge.net https://www.recaptcha.net https://www.gstatic.com https://www.gstatic.cn;"
+    font_src="font-src 'self' data: https://onedesign.azureedge.net;"
+    media_src="media-src 'self' https://ndtai.azureedge.net;"
+    img_src="img-src 'self' data: https://onedesign.azureedge.net https://ndtai.azureedge.net;"
+    frame_src="frame-src 'self' https://www.google.com https://www.recaptcha.net/"
+    response.headers["content-security-policy"] = " ".join((default_src,object_src,script_src,font_src,media_src,img_src,frame_src))
+    del response.headers['Server']
+    return response
 
 @web.route("/")
 def index():

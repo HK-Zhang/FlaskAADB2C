@@ -1,5 +1,6 @@
 from flask import Flask,url_for
 from flask_session import Session  # https://pythonhosted.org/Flask-Session
+from flask_cors import CORS
 from config import appinsightKey,apiversion,load_config
 from opencensus.ext.azure.trace_exporter import AzureExporter
 from opencensus.ext.azure.log_exporter import AzureLogHandler
@@ -25,6 +26,7 @@ formatter = logging.Formatter(format_str, date_format)
 rootlogger = logging.getLogger()
 
 app = Flask(__name__)
+CORS(app)
 app.config.from_object(app_config_b2c)
 Session(app)
 handler = AzureLogHandler(connection_string=f'InstrumentationKey={appinsightKey}')
