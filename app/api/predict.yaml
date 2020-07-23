@@ -1,0 +1,36 @@
+This is the image detection API
+Call this api passing the image path and get back its detection result
+---
+tags:
+  - Image Detection API
+parameters:
+  - name: body
+    in: body
+    required: true
+    schema:
+      id: csvfile
+      required:
+        -path
+      properties:
+        path:
+          type: string
+          description: the source storage location of image
+        fileName:
+          type: string
+          description: the file name of image
+responses:
+  500:
+    description: Error!
+  200:
+    description: Detection Result
+    schema:
+      id: predict_result
+      properties:
+        result_path:
+          type: string
+          description: the target storage location of result
+          default: null
+        processed_time:
+          type: decimal
+          description: the totla time used to processed the image
+          default: 0
